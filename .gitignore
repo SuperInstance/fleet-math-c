@@ -1,0 +1,6 @@
+*.o
+test
+bench
+test_standalone
+bench_standalone
+test_debug
