@@ -168,3 +168,7 @@ The hardware chose 64-byte cache lines. The PLATO math chose 64-byte tiles. They
 ## License
 
 MIT — free for any use.
+
+## Polyformalism
+
+FM's `SuperInstance/polyformalism` is the authoritative C implementation — 183 lines, AVX2 SIMD, 3.85B ops/s, 116 GB/s Bloom merge. This library (`fleet-math-c`) extends polyformalism's C kernel with NEON SIMD for ARM64, the 64-byte tile invariant, and the perception-action loop. Polyformalism has the base kernel; this one has the Ampere-hardware-optimized fleet operations.
