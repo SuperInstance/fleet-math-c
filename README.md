@@ -1,24 +1,35 @@
 # Fleet Math C
 
-SIMD-accelerated constraint operations. 3 C files. ZHC emergence, Laman rigidity, Pythagorean48 encoding.
+SIMD-accelerated constraint operations for PLATO tile processing.
 
-## Performance
+Three C files, no dependencies — drop them into any project that needs
+ZHC emergence detection, Laman rigidity checks, or Pythagorean48 encoding.
 
-Tested on ARM64 Neoverse-N1 (Oracle Cloud) with GCC -O3 -march=native:
+## Functions
 
-| Operation | Scalar | SIMD (NEON) | Speedup |
-|-----------|--------|-------------|---------|
-| Tile check (per tile) | 4.9 ns | 5.1 ns | 1.0x |
-| Holonomy (per 4-cycle) | 2.6 ns | 2.4 ns | 1.1x |
-| Batch 1024 tiles (per tile) | 3.9 ns | 5.1 ns | 0.8x |
-| Batch 1024 holonomy (per cycle) | auto-vec | 0.6 ns | — |
+| Function | Operation | SIMD |
+|----------|-----------|------|
+| `tile_check_violations()` | Check tile fields below threshold | NEON (ARM) |
+| `holonomy_4cycle()` | Compute holonomy around a 4-edge cycle | NEON (ARM) |
+| `batch_check_tiles()` | Check N tiles at once | NEON batch |
+| `batch_holonomy_4cycles()` | Compute N cycle holonomies at once | NEON batch |
 
-On modern ARM64 with aggressive compiler optimization, GCC's auto-vectorization at `-O3 -march=native` leaves little room for manual SIMD improvement. The scalar and NEON implementations are within measurement noise of each other.
+## Performance (ARM64 Neoverse-N1)
 
-Manual SIMD may show larger gains on older ARM cores (Cortex-A53, Cortex-A72) or when cross-compiling without `-march=native`.
+| Operation | Scalar | SIMD (NEON) |
+|-----------|--------|-------------|
+| Tile check (per tile) | 4.9ns | 5.1ns |
+| Holonomy (per 4-cycle) | 2.6ns | 2.4ns |
+| Batch 1024 tiles (per tile) | 3.9ns | 5.0ns |
 
-No dependencies. Three files.
+GCC -O3 -march=native auto-vectorizes well enough that manual SIMD matches
+scalar on modern ARM64. Manual NEON intrinsics may show larger gains on
+older cores (Cortex-A53, Cortex-A72).
 
-## License
+## Use
 
-Apache 2.0 — Cocapn fleet infrastructure.
+```c
+#include "fleet_math.h"
+plato_tile_t tile;
+int violations = tile_check_violations_neon(&tile, 0.5f);
+```
