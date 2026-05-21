@@ -1,6 +1,10 @@
 [package]
 name = "fleet-math-c"
 version = "0.1.0"
+description = "C-compatible math primitives for fleet agents"
+license = "MIT"
+repository = "https://github.com/SuperInstance/fleet-math-c"
+readme = "README.md"
 edition = "2021"
 rust-version = "1.70"
 
