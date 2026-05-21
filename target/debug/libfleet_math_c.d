@@ -1,0 +1,1 @@
+/home/phoenix/.openclaw/workspace/fleet-math-c/target/debug/libfleet_math_c.rlib: /home/phoenix/.openclaw/workspace/fleet-math-c/target/package/fleet-math-c-0.1.0/build.rs /home/phoenix/.openclaw/workspace/fleet-math-c/target/package/fleet-math-c-0.1.0/src/lib.rs

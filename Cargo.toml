@@ -1,0 +1,9 @@
+[package]
+name = "fleet-math-c"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.70"
+
+[lib]
+name = "fleet_math_c"
+path = "src/lib.rs"
