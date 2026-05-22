@@ -1,3 +1,4 @@
+#![allow(clippy::not_unsafe_ptr_arg_deref)]
 //! Fleet math library — C-compatible math primitives for fleet operations.
 //!
 //! Provides Eisenstein integer operations, Laman rigidity checks, holonomy
