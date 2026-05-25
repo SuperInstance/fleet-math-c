@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        cc: [gcc, clang]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build
+        run: make
+        env:
+          CC: ${{ matrix.cc }}
+
+      - name: Run tests
+        run: make check
+        env:
+          CC: ${{ matrix.cc }}
+
+      - name: Run benchmarks
+        run: make bench-run
+        env:
+          CC: ${{ matrix.cc }}
