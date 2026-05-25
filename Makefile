@@ -1,8 +1,13 @@
 CC       = gcc
-CFLAGS   = -O3 -mavx512f -mavx512dq -ffast-math -march=native -DFLEET_MATH_ENABLE_AVX512
+CFLAGS   = -O3 -ffast-math -march=native
 LDFLAGS  = -lm
 WARN     = -Wall -Wextra -Wpedantic -Wstrict-prototypes
 ARCH     = $(shell uname -m)
+
+# Enable AVX-512 only when explicitly requested (CI runners lack it)
+ifeq ($(ENABLE_AVX512), 1)
+    CFLAGS += -mavx512f -mavx512dq -DFLEET_MATH_ENABLE_AVX512
+endif
 
 # On ARM, drop x86 flags
 ifeq ($(ARCH), aarch64)
