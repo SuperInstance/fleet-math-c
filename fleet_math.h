@@ -211,8 +211,9 @@ batch_holonomy_4cycles_avx512(const float *weights, int n, float *out_holonomy)
          * For each cycle: extract lane 0 (w0*w1) - lane 2 (w2*w3) */
 
         /* Interleave: (w0*w1, w2*w3) → adjacent and subtract */
-        /* _mm512_hsub_ps subtracts adjacent pairs within lanes */
-        __m512 result = _mm512_hsub_ps(prod, prod);
+        /* _mm512_hsub_ps doesn't exist in AVX-512 — extract and subtract manually */
+        __m512 swapped = _mm512_permute_ps(prod, _MM_SHUFFLE(2, 3, 0, 1)); /* swap pairs */
+        __m512 result = _mm512_sub_ps(prod, swapped);
 
         /* Store — result has the holonomies in every other lane */
         _mm_store_ps(&out_holonomy[i], _mm512_castps512_ps128(result));
